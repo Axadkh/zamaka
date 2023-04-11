@@ -1,4 +1,4 @@
-package com.property.zamaka
+package com.property.propertya
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -20,8 +20,9 @@ import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.navigation.ui.AppBarConfiguration
 import com.google.android.material.snackbar.Snackbar
+import com.property.zamaka.R
+
 import com.property.zamaka.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -39,10 +40,17 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+//        loadWebView()
+        binding.splashView.root.visibility = View.VISIBLE
+
+        Handler().postDelayed(Runnable {
+            binding.splashView.root.visibility = View.GONE
+        }, 3000L)
 
 
         if (!isOnline()) {
 
+            binding.noConnection.visibility = View.VISIBLE
             binding.infoTV.text = getString(R.string.no_internet)
             showNoNetSnackBar()
             return
@@ -50,10 +58,14 @@ class MainActivity : AppCompatActivity() {
 
 
 
+
     }
 
     override fun onResume() {
-        if (isOnline() && !isLoaded) loadWebView()
+        if (isOnline() && !isLoaded) {loadWebView()
+              loadWebView()
+            binding.noConnection.visibility = View.GONE
+        }
         super.onResume()
     }
 
@@ -73,6 +85,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                if(binding.noConnection.visibility == View.VISIBLE) {
+                    binding.noConnection.visibility = View.GONE
+                }
                 setProgressDialogVisibility(true)
                 super.onPageStarted(view, url, favicon)
             }
@@ -86,10 +101,13 @@ class MainActivity : AppCompatActivity() {
             override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
                 isLoaded = false
                 val errorMessage = "Got Error! $error"
-                showToast(errorMessage)
-                binding.infoTV.text = errorMessage
+//                showToast(errorMessage)
+            binding.infoTV.text = errorMessage
+                binding.noConnection.visibility = View.VISIBLE
+                showNoNetSnackBar()
                 setProgressDialogVisibility(false)
-                super.onReceivedError(view, request, error)
+
+            super.onReceivedError(view, request, error)
             }
         }
     }
@@ -161,13 +179,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun showNoNetSnackBar() {
-        val snack = Snackbar.make(binding.root, getString(R.string.no_internet), Snackbar.LENGTH_INDEFINITE)
-        snack.setAction(getString(R.string.settings)) {
-            startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+        val snack = Snackbar.make(binding.root, "An error occurred", Snackbar.LENGTH_INDEFINITE)
+        snack.setAction(getString(R.string.retry)) {
+           loadWebView()
+            binding.noConnection.visibility =View.GONE
         }
         snack.show()
     }

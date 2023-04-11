@@ -1,4 +1,4 @@
-package com.property.zamaka
+package com.property.propertya
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
+import com.property.zamaka.R
 
 class Progress constructor(
     context: Context?,
