@@ -1,8 +1,7 @@
-package com.property.propertya
+package com.property.zamaka
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -10,18 +9,15 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebResourceError
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.snackbar.Snackbar
-import com.property.zamaka.R
 
 import com.property.zamaka.databinding.ActivityMainBinding
 
@@ -41,7 +37,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //        loadWebView()
-        binding.splashView.root.visibility = View.VISIBLE
 
         Handler().postDelayed(Runnable {
             binding.splashView.root.visibility = View.GONE
@@ -49,7 +44,6 @@ class MainActivity : AppCompatActivity() {
 
 
         if (!isOnline()) {
-
             binding.noConnection.visibility = View.VISIBLE
             binding.infoTV.text = getString(R.string.no_internet)
             showNoNetSnackBar()
@@ -67,6 +61,12 @@ class MainActivity : AppCompatActivity() {
             binding.noConnection.visibility = View.GONE
         }
         super.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+
     }
 
     @SuppressLint("SetJavaScriptEnabled")

@@ -1,11 +1,10 @@
-package com.property.propertya
+package com.property.zamaka
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import com.property.zamaka.R
 
 
 class SplashAct : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.property.propertya
+package com.property.zamaka
 
 import org.junit.Test
 
